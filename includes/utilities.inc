@@ -49,9 +49,9 @@ function islandora_rightsstatements_get_html($uri) {
   $result = get_object_vars(drupal_http_request($uri, $options));
   $result_json = get_object_vars(drupal_http_request($result['headers']['location']));
   $result_json = get_object_vars(json_decode($result_json['data']));
-  $definition = get_object_vars($result_json['definition'])['@value'];
+  $definition = get_object_vars($result_json['definition']['2'])['@value'];
   $note = get_object_vars($result_json['note']['0'])['@value'];
-  $title = get_object_vars($result_json['prefLabel'])['@value'];
+  $title = get_object_vars($result_json['prefLabel']['1'])['@value'];
   $alt_text = $title . '<p>' . $definition . '</p><p>' . $note . '</p>';
 
   $img = array(
