@@ -1,0 +1,61 @@
+<?php
+/**
+ * @file
+ * Rights Statements Badges
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function islandora_rightsstatements_menu() {
+  return array(
+    'admin/islandora/tools/badges/rightsstatements' => array(
+      'title' => 'Rightsstatements badge',
+      'description' => 'Configure Rightsstatements.org badge settings.',
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('islandora_rightsstatements_admin_form'),
+      'access arguments' => array('administer site configuration'),
+      'type' => MENU_LOCAL_TASK,
+      'file' => 'includes/admin.form.inc',
+    ),
+  );
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function islandora_rightsstatements_block_info() {
+  return array(
+    'islandora_rightsstatements_badge' => array(
+      'visibility' => BLOCK_VISIBILITY_LISTED,
+      'pages' => 'islandora/object/*',
+      'cache' => DRUPAL_CACHE_PER_PAGE,
+      'info' => t('Islandora Rightsstatements Badge'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function islandora_rightsstatements_block_view($delta = '') {
+  module_load_include('inc', 'islandora_badges', 'includes/utilities');
+  module_load_include('inc', 'islandora_rightsstatements', 'includes/utilities');
+  $to_render = array();
+
+  if ($delta == 'islandora_rightsstatements_badge') {
+    $object = menu_get_object('islandora_object', 2);
+    if ($object) {
+      // Check CModel against Badges configuration.
+      if (islandora_badges_show_for_cmodel($object)) {
+        $uri = islandora_rightsstatements_get_uri($object);
+        if (!isset($uri)) { 
+          return;
+        }
+        $badge = islandora_rightsstatements_get_html($uri);
+        $to_render['content'] = $badge;
+      }
+    }
+  }
+  return $to_render;
+}

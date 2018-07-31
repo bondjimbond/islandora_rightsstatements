@@ -1,0 +1,5 @@
+name = Islandora Rights Statements
+core = 7.x
+description = Displays a Rightsstatements.org badge.
+dependencies[] = islandora_badges
+package = Islandora Tools

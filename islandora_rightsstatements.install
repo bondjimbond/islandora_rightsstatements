@@ -1,0 +1,17 @@
+<?php
+/**
+ * @file
+ * Installation hooks for Islandora CC Badge.
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function islandora_rightsstatements_uninstall() {
+  $vars = array(
+    islandora_rightsstatements_path,
+    islandora_rightsstatements_image_height,
+    islandora_rightsstatements_image_colour,
+  );
+  array_walk($vars, 'variable_del');
+}
