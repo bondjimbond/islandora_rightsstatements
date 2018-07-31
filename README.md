@@ -25,7 +25,7 @@ Install as usual, see [this](https://drupal.org/documentation/install/modules-th
 
 ## Configuration
 
-Configuration path is admin/islandora/tools/badges/creativecommons (Administration > Islandora > Islandora Utility Modules > Islandora Badges Configuration > CC Badge).
+Configuration path is admin/islandora/tools/badges/rightsstatements (Administration > Islandora > Islandora Utility Modules > Islandora Badges Configuration > Rightsstatements Badge).
 
 * Solr field for Rightsstatements.org URI: Defaults to mods_accessCondition_ms. dc.rights would also be a good choice. Prefer a multivalued field.
 * Image style: Choose small icon (just the symbol) or Large button (symbol plus text).
