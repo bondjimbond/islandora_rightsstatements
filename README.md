@@ -32,6 +32,14 @@ Configuration path is admin/islandora/tools/badges/rightsstatements (Administrat
 * Image Height: Set the image height in pixels.
 * Image Colour: Rightsstatements.org provides black or white icons, and buttons with black text or blue text.
 
+## Metadata
+
+You can choose any element for your Rights Statement URI, so long as it creates a Solr field. The default is `dc.rights`.
+
+The value of the field must be a URI to the Rights Statement. Example from a MODS datastream:
+
+`<accessCondition type="use and reproduction" displayLabel="Rights Statement">http://rightsstatements.org/vocab/InC-NC/1.0/</accessCondition>`
+
 ## Troubleshooting/Issues
 
 Having problems or solved a problem? Check out the Islandora google groups for a solution.
