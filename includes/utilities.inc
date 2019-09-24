@@ -42,24 +42,51 @@ function islandora_rightsstatements_get_html($uri) {
   $options = array(
     'method' => 'GET',
     'headers' => array(
-      'Accept' => 'application/json',
+      'Accept' => 'application/json+ld',
     ),
   );
   // The result has lots of objects that must be turned into arrays.
   $result = get_object_vars(drupal_http_request($uri, $options));
-  $result_json = get_object_vars(drupal_http_request($result['headers']['location']));
+  $result_redirect = drupal_http_request('http://rightsstatements.org' . $result['headers']['location'], $options);
+  $result_json = get_object_vars($result_redirect);
   $result_json = get_object_vars(json_decode($result_json['data']));
-  $definition = get_object_vars($result_json['definition']['2'])['@value'];
-  $note = get_object_vars($result_json['note']['0'])['@value'];
-  $title = get_object_vars($result_json['prefLabel']['1'])['@value'];
-  $alt_text = $title . '<p>' . $definition . '</p><p>' . $note . '</p>';
+
+
+  $definitions = $result_json['definition'];
+
+
+  foreach ($definitions AS $definition) {
+    $definition = get_object_vars($definition);
+    if ($definition['@language'] == 'en') {
+      $definition_value = $definition['@value'];
+    }
+  }
+
+  $notes = $result_json['note'];
+
+  foreach ($notes AS $note) {
+    $note = get_object_vars($note);
+    if ($note['@language'] == 'en') {
+      $note_value = $note['@value'];
+    }
+  }
+
+  $titles = $result_json['prefLabel'];
+
+  foreach ($titles AS $title) {
+    $title = get_object_vars($title);
+    if ($title['@language'] == 'en') {
+      $title_value = $title['@value'];
+    }
+  }
+  $alt_text = $title_value . '<p>' . $definition_value . '</p><p>' . $note_value . '</p>';
 
   $img = array(
     '#theme' => 'image',
     '#path' => $image,
     '#alt' => $alt_text,
     '#height' => $height,
-    '#title' => $title,
+    '#title' => $title_value,
   );
   $badge = array(
     '#type' => 'link',
