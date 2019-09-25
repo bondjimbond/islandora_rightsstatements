@@ -51,13 +51,20 @@ function islandora_rightsstatements_get_html($uri) {
   $result_json = get_object_vars($result_redirect);
   $result_json = get_object_vars(json_decode($result_json['data']));
 
-
   $definitions = $result_json['definition'];
 
+  $preferred_language = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+  $possible_languages = ['de', 'et', 'fi', 'fr', 'pl', 'en', 'sv-fi', 'es'];
+  if (in_array($preferred_language, $possible_languages, true)) {
+    $language = $preferred_language;
+  }
+  else {
+    $language = 'en';
+  }
 
   foreach ($definitions AS $definition) {
     $definition = get_object_vars($definition);
-    if ($definition['@language'] == 'en') {
+    if ($definition['@language'] == $language) {
       $definition_value = $definition['@value'];
     }
   }
@@ -66,7 +73,7 @@ function islandora_rightsstatements_get_html($uri) {
 
   foreach ($notes AS $note) {
     $note = get_object_vars($note);
-    if ($note['@language'] == 'en') {
+    if ($note['@language'] == $language) {
       $note_value = $note['@value'];
     }
   }
@@ -75,7 +82,7 @@ function islandora_rightsstatements_get_html($uri) {
 
   foreach ($titles AS $title) {
     $title = get_object_vars($title);
-    if ($title['@language'] == 'en') {
+    if ($title['@language'] == $language) {
       $title_value = $title['@value'];
     }
   }
