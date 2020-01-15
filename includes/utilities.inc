@@ -53,7 +53,8 @@ function islandora_rightsstatements_get_html($uri) {
 
   $definitions = $result_json['definition'];
 
-  $preferred_language = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+  $preferred_language = !empty($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? strtok(strip_tags($_SERVER['HTTP_ACCEPT_LANGUAGE']), ',') : '';
+  $preferred_language = substr($preferred_language, 0, 2);
   $possible_languages = ['de', 'et', 'fi', 'fr', 'pl', 'en', 'sv-fi', 'es'];
   if (in_array($preferred_language, $possible_languages, true)) {
     $language = $preferred_language;
